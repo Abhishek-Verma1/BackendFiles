@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      - NODE_ENV=development
+      - PYTHON_API_URL=http://tic-tac-toe-engine:8000
+      - JWT_SECRET= secret
+      - PORT=8080
+
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    depends_on:
+      - tic-tac-toe-engine
+
+  tic-tac-toe-engine:
+    build:
+      context: ./tic-tac-toe-engine
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./tic-tac-toe-engine:/usr/src/app
